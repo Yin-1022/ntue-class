@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'constant.dart';
 import 'note_database.dart';
 import 'color_data.dart';
@@ -60,41 +61,9 @@ class _MyAppState extends State<MyApp> {
                     itemBuilder: (context, index)
                     {
                       final task = textData[index];
-                      if(index%2==0)
-                      {
-                        return CardWidget(title: task['title'], content: task["content"], kContentTextStyle: kContentTextStyle, kTitleTextStyle: kTitleTextStyle,cardColor: Color(int.parse(colorTheme[randomNumber()])));
-                      }
-                      else
-                      {
-                        return const SizedBox();
-                      }
+                      return CardWidget(title: task['title'], content: task["content"], kContentTextStyle: kContentTextStyle, kTitleTextStyle: kTitleTextStyle,cardColor: Color(int.parse(colorTheme[randomNumber()])));
                     },
                   )
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container
-              (
-                color: const Color(0XffC599B6),
-                child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: ListView.builder
-                    (
-                      itemCount : textData.length,
-                      itemBuilder: (context, index)
-                      {
-                        final task = textData[index];
-                        if(index%2==1)
-                        {
-                          return CardWidget(title: task['title'], content: task["content"], kContentTextStyle: kContentTextStyle, kTitleTextStyle: kTitleTextStyle,cardColor: Color(int.parse(colorTheme[randomNumber()])));
-                        }
-                        else
-                        {
-                          return const SizedBox();
-                        }
-                      },
-                    )
                 ),
               ),
             ),
@@ -139,7 +108,17 @@ class CardWidget extends StatelessWidget
         crossAxisAlignment: CrossAxisAlignment.start,
         children:
         [
-          Text(title ?? "default", style: kTitleTextStyle),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(title ?? "default", style: kTitleTextStyle),
+              IconButton
+              (
+                  onPressed: (){},
+                  icon: FaIcon(FontAwesomeIcons.trash, color: Colors.grey.shade700,),
+              ),
+            ],
+          ),
           Text(content ?? "default", style: kContentTextStyle)
         ],
       ),
