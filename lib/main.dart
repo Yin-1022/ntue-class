@@ -10,6 +10,11 @@ int randomNumber()
   return Random().nextInt(4);
 }
 
+void removeNote(int index)
+{
+  textData.removeAt(index);
+}
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget
@@ -61,7 +66,13 @@ class _MyAppState extends State<MyApp> {
                     itemBuilder: (context, index)
                     {
                       final task = textData[index];
-                      return CardWidget(title: task['title'], content: task["content"], kContentTextStyle: kContentTextStyle, kTitleTextStyle: kTitleTextStyle,cardColor: Color(int.parse(colorTheme[randomNumber()])));
+                      return CardWidget(title: task['title'], content: task["content"], index:index ,remove: ()
+                      {
+                        setState(()
+                        {
+                          removeNote(index);
+                        });
+                      });
                     },
                   )
                 ),
@@ -78,17 +89,16 @@ class CardWidget extends StatelessWidget
 {
   final String? title;
   final String? content;
-  final TextStyle? kTitleTextStyle;
-  final TextStyle? kContentTextStyle;
-  final Color cardColor;
+  final int index;
+  final VoidCallback remove;
+
 
   const CardWidget({
     super.key,
     required this.title,
     required this.content,
-    required this.kTitleTextStyle,
-    required this.kContentTextStyle,
-    required this.cardColor
+    required this.index,
+    required this.remove,
   });
 
   @override
@@ -100,7 +110,7 @@ class CardWidget extends StatelessWidget
       width: double.infinity,
       decoration: BoxDecoration
       (
-          color: cardColor,
+          color: Color(int.parse(colorTheme[randomNumber()])),
           borderRadius: BorderRadius.circular(20)
       ),
       child: Column
@@ -114,7 +124,7 @@ class CardWidget extends StatelessWidget
               Text(title ?? "default", style: kTitleTextStyle),
               IconButton
               (
-                  onPressed: (){},
+                  onPressed: (){remove();},
                   icon: FaIcon(FontAwesomeIcons.trash, color: Colors.grey.shade700,),
               ),
             ],
